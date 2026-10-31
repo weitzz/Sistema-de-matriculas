@@ -1,6 +1,6 @@
 # Sistema de Matrícula
 
-Aplicação web acadêmica em Java com Spring MVC, Thymeleaf e MongoDB para gerenciar alunos, cursos e matrículas.
+Aplicação web acadêmica em Java com Spring MVC, Thymeleaf, MongoDB e Docker para gerenciar alunos, cursos e matrículas.
 
 O projeto organiza a aplicação em camadas MVC: controladores recebem as requisições, serviços aplicam as regras de negócio, repositórios acessam o MongoDB e templates Thymeleaf renderizam as páginas.
 
