@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cursos')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav('cursos')}"></header>
+<main class="page-shell">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">GESTÃO ACADÊMICA <span>/</span> OFERTA</p>
+            <h1>Cursos</h1>
+            <p class="page-description">Gerencie a carga horária e as vagas disponíveis.</p>
+        </div>
+        <a class="button button-primary" th:href="@{/cursos/novo}"><span class="button-plus">+</span> Novo curso</a>
+    </section>
+
+    <div class="alert alert-success" th:if="${mensagemSucesso}" th:text="${mensagemSucesso}"></div>
+    <div class="alert alert-error" th:if="${mensagemErro}" th:text="${mensagemErro}"></div>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div><h2>Cursos cadastrados</h2><p>As vagas são usadas no controle de novas matrículas.</p></div>
+            <span class="count-pill" th:text="${#lists.size(cursos) + (#lists.size(cursos) == 1 ? ' curso' : ' cursos')}">0 cursos</span>
+        </div>
+        <div class="table-wrap" th:if="${!#lists.isEmpty(cursos)}">
+            <table>
+                <thead><tr><th>Curso</th><th>Carga horária</th><th>Vagas</th><th class="actions-heading">Ações</th></tr></thead>
+                <tbody>
+                <tr th:each="curso : ${cursos}">
+                    <td><span class="person-cell"><span class="avatar avatar-course">C</span><strong th:text="${curso.nome}">Nome do curso</strong></span></td>
+                    <td class="muted-cell"><span th:text="${curso.cargaHoraria}">120</span> horas</td>
+                    <td><span class="status-pill" th:text="${curso.vagas + (curso.vagas == 1 ? ' vaga' : ' vagas')}">20 vagas</span></td>
+                    <td class="row-actions">
+                        <a class="text-action" th:href="@{/cursos/{id}(id=${curso.id})}">Ver alunos</a>
+                        <a class="text-action" th:href="@{/cursos/{id}/editar(id=${curso.id})}">Editar</a>
+                        <form th:action="@{/cursos/{id}/excluir(id=${curso.id})}" method="post" onsubmit="return confirm('Excluir este curso?');">
+                            <button class="text-action danger-action" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(cursos)}">
+            <span class="empty-icon">C</span>
+            <h3>Nenhum curso cadastrado</h3>
+            <p>Cadastre um curso antes de registrar as matrículas dos alunos.</p>
+            <a class="button button-secondary" th:href="@{/cursos/novo}">Cadastrar curso</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

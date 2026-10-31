@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${tituloFormulario})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav('cursos')}"></header>
+<main class="page-shell narrow-shell">
+    <div class="breadcrumb"><a th:href="@{/cursos}">Cursos</a><span>/</span><span th:text="${tituloFormulario}">Novo curso</span></div>
+    <section class="form-card">
+        <div class="form-heading">
+            <div class="section-icon icon-course">C</div>
+            <div><p class="eyebrow">OFERTA ACADÊMICA</p><h1 th:text="${tituloFormulario}">Novo curso</h1><p>Defina a carga horária e o limite de vagas do curso.</p></div>
+        </div>
+        <form th:object="${curso}" th:action="${curso.id == null ? '/cursos/salvar' : '/cursos/' + curso.id + '/atualizar'}" method="post" class="form-fields">
+            <div class="field-group">
+                <label for="nome">Nome do curso</label>
+                <input id="nome" type="text" th:field="*{nome}" placeholder="Ex.: Análise e Desenvolvimento de Sistemas" autofocus>
+                <small class="field-error" th:errors="*{nome}"></small>
+            </div>
+            <div class="field-row">
+                <div class="field-group">
+                    <label for="cargaHoraria">Carga horária</label>
+                    <div class="input-suffix"><input id="cargaHoraria" type="number" min="1" th:field="*{cargaHoraria}" placeholder="120"><span>horas</span></div>
+                    <small class="field-error" th:errors="*{cargaHoraria}"></small>
+                </div>
+                <div class="field-group">
+                    <label for="vagas">Quantidade de vagas</label>
+                    <div class="input-suffix"><input id="vagas" type="number" min="1" th:field="*{vagas}" placeholder="30"><span>vagas</span></div>
+                    <small class="field-error" th:errors="*{vagas}"></small>
+                </div>
+            </div>
+            <div class="form-errors" th:if="${#fields.hasGlobalErrors()}"><p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p></div>
+            <div class="form-actions">
+                <a class="button button-quiet" th:href="@{/cursos}">Cancelar</a>
+                <button class="button button-primary" type="submit" th:text="${textoBotao}">Cadastrar curso</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

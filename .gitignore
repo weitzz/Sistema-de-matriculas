@@ -1,0 +1,5 @@
+# Materiais acadêmicos locais
+/docs/
+
+# Artefatos gerados pelo Maven
+/target/

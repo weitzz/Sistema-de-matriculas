@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${tituloFormulario})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav('matriculas')}"></header>
+<main class="page-shell narrow-shell">
+    <div class="breadcrumb"><a th:href="@{/matriculas}">Matrículas</a><span>/</span><span th:text="${tituloFormulario}">Nova matrícula</span></div>
+    <section class="form-card">
+        <div class="form-heading">
+            <div class="section-icon icon-enrollment">M</div>
+            <div><p class="eyebrow">VÍNCULO ACADÊMICO</p><h1 th:text="${tituloFormulario}">Nova matrícula</h1><p>Selecione o aluno e o curso para registrar o vínculo.</p></div>
+        </div>
+        <div class="alert alert-error" th:if="${#lists.isEmpty(alunos) or #lists.isEmpty(cursos)}">Cadastre ao menos um aluno e um curso antes de registrar uma matrícula.</div>
+        <form th:object="${matricula}" th:action="${matricula.id == null ? '/matriculas/salvar' : '/matriculas/' + matricula.id + '/atualizar'}" method="post" class="form-fields">
+            <div class="field-group">
+                <label for="alunoId">Aluno</label>
+                <select id="alunoId" th:field="*{alunoId}">
+                    <option value="">Selecione um aluno</option>
+                    <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome + ' · ' + aluno.cpf}">Aluno</option>
+                </select>
+                <small class="field-error" th:errors="*{alunoId}"></small>
+            </div>
+            <div class="field-group">
+                <label for="cursoId">Curso</label>
+                <select id="cursoId" th:field="*{cursoId}">
+                    <option value="">Selecione um curso</option>
+                    <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.nome + ' · ' + curso.vagas + ' vagas'}">Curso</option>
+                </select>
+                <small class="field-error" th:errors="*{cursoId}"></small>
+            </div>
+            <div class="field-group">
+                <label for="dataMatricula">Data da matrícula</label>
+                <input id="dataMatricula" type="date" th:field="*{dataMatricula}">
+                <small class="field-error" th:errors="*{dataMatricula}"></small>
+            </div>
+            <div class="form-errors" th:if="${#fields.hasGlobalErrors()}"><p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p></div>
+            <div class="form-actions">
+                <a class="button button-quiet" th:href="@{/matriculas}">Cancelar</a>
+                <button class="button button-primary" type="submit" th:disabled="${#lists.isEmpty(alunos) or #lists.isEmpty(cursos)}" th:text="${textoBotao}">Registrar matrícula</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

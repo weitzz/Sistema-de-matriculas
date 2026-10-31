@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Matrículas')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav('matriculas')}"></header>
+<main class="page-shell">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">GESTÃO ACADÊMICA <span>/</span> VÍNCULOS</p>
+            <h1>Matrículas</h1>
+            <p class="page-description">Acompanhe os alunos vinculados a cada curso.</p>
+        </div>
+        <a class="button button-primary" th:href="@{/matriculas/novo}"><span class="button-plus">+</span> Nova matrícula</a>
+    </section>
+
+    <div class="alert alert-success" th:if="${mensagemSucesso}" th:text="${mensagemSucesso}"></div>
+    <div class="alert alert-error" th:if="${mensagemErro}" th:text="${mensagemErro}"></div>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div><h2>Matrículas registradas</h2><p>Um aluno pode ter uma matrícula por curso.</p></div>
+            <span class="count-pill" th:text="${#lists.size(matriculas) + (#lists.size(matriculas) == 1 ? ' registro' : ' registros')}">0 registros</span>
+        </div>
+        <div class="table-wrap" th:if="${!#lists.isEmpty(matriculas)}">
+            <table>
+                <thead><tr><th>Aluno</th><th>Curso</th><th>Data da matrícula</th><th class="actions-heading">Ações</th></tr></thead>
+                <tbody>
+                <tr th:each="matricula : ${matriculas}">
+                    <td><span class="person-cell"><span class="avatar">A</span><strong th:text="${matricula.alunoNome}">Aluno</strong></span></td>
+                    <td class="muted-cell" th:text="${matricula.cursoNome}">Curso</td>
+                    <td class="muted-cell" th:text="${matricula.dataMatriculaFormatada}">01/01/2026</td>
+                    <td class="row-actions">
+                        <a class="text-action" th:href="@{/matriculas/{id}/editar(id=${matricula.id})}">Editar</a>
+                        <form th:action="@{/matriculas/{id}/excluir(id=${matricula.id})}" method="post" onsubmit="return confirm('Excluir esta matrícula?');">
+                            <button class="text-action danger-action" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(matriculas)}">
+            <span class="empty-icon">M</span>
+            <h3>Nenhuma matrícula registrada</h3>
+            <p>Escolha um aluno e um curso para criar a primeira matrícula.</p>
+            <a class="button button-secondary" th:href="@{/matriculas/novo}">Registrar matrícula</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

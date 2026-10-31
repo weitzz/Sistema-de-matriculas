@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Alunos do curso')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav('cursos')}"></header>
+<main class="page-shell">
+    <div class="breadcrumb"><a th:href="@{/cursos}">Cursos</a><span>/</span><span th:text="${curso.nome}">Curso</span></div>
+    <section class="page-heading course-detail-heading">
+        <div>
+            <p class="eyebrow">OFERTA ACADÊMICA <span>/</span> ALUNOS MATRICULADOS</p>
+            <h1 th:text="${curso.nome}">Nome do curso</h1>
+            <p class="page-description"><span th:text="${curso.cargaHoraria}">120</span> horas de carga horária</p>
+        </div>
+        <div class="heading-actions">
+            <a class="button button-quiet" th:href="@{/cursos}">Voltar aos cursos</a>
+            <a class="button button-primary" th:href="@{/matriculas/novo}"><span class="button-plus">+</span> Nova matrícula</a>
+        </div>
+    </section>
+
+    <section class="course-stats" aria-label="Resumo de vagas">
+        <article class="stat-card"><span class="stat-label">Alunos matriculados</span><strong th:text="${totalMatriculados}">0</strong></article>
+        <article class="stat-card"><span class="stat-label">Total de vagas</span><strong th:text="${curso.vagas}">30</strong></article>
+        <article class="stat-card"><span class="stat-label">Vagas disponíveis</span><strong class="stat-available" th:text="${vagasDisponiveis}">30</strong></article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div><h2>Alunos deste curso</h2><p>Os alunos aparecem aqui após a matrícula ser registrada.</p></div>
+            <span class="count-pill" th:text="${totalMatriculados + (totalMatriculados == 1 ? ' aluno' : ' alunos')}">0 alunos</span>
+        </div>
+        <div class="table-wrap" th:if="${!#lists.isEmpty(alunosMatriculados)}">
+            <table>
+                <thead><tr><th>Aluno</th><th>CPF</th><th>E-mail</th><th>Data da matrícula</th><th class="actions-heading">Ações</th></tr></thead>
+                <tbody>
+                <tr th:each="aluno : ${alunosMatriculados}">
+                    <td><span class="person-cell"><span class="avatar" th:text="${#strings.substring(aluno.nome, 0, 1)}">A</span><strong th:text="${aluno.nome}">Nome do aluno</strong></span></td>
+                    <td class="muted-cell" th:text="${aluno.cpf}">00000000000</td>
+                    <td class="muted-cell" th:text="${aluno.email}">aluno@example.com</td>
+                    <td class="muted-cell" th:text="${aluno.dataMatriculaFormatada}">01/01/2026</td>
+                    <td class="row-actions">
+                        <a class="text-action" th:href="@{/matriculas/{id}/editar(id=${aluno.matriculaId})}">Ver matrícula</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(alunosMatriculados)}">
+            <span class="empty-icon">A</span>
+            <h3>Nenhum aluno matriculado</h3>
+            <p>Quando uma matrícula for registrada neste curso, os dados do aluno aparecerão aqui.</p>
+            <a class="button button-secondary" th:href="@{/matriculas/novo}">Registrar matrícula</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

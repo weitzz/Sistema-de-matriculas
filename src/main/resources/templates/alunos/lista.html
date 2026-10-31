@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Alunos')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav('alunos')}"></header>
+<main class="page-shell">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">GESTÃO ACADÊMICA <span>/</span> PESSOAS</p>
+            <h1>Alunos</h1>
+            <p class="page-description">Mantenha os dados dos alunos organizados em um só lugar.</p>
+        </div>
+        <a class="button button-primary" th:href="@{/alunos/novo}"><span class="button-plus">+</span> Novo aluno</a>
+    </section>
+
+    <div class="alert alert-success" th:if="${mensagemSucesso}" th:text="${mensagemSucesso}"></div>
+    <div class="alert alert-error" th:if="${mensagemErro}" th:text="${mensagemErro}"></div>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div><h2>Alunos cadastrados</h2><p>Consulte e atualize os registros do sistema.</p></div>
+            <span class="count-pill" th:text="${#lists.size(alunos) + (#lists.size(alunos) == 1 ? ' registro' : ' registros')}">0 registros</span>
+        </div>
+        <div class="table-wrap" th:if="${!#lists.isEmpty(alunos)}">
+            <table>
+                <thead><tr><th>Nome</th><th>CPF</th><th>E-mail</th><th class="actions-heading">Ações</th></tr></thead>
+                <tbody>
+                <tr th:each="aluno : ${alunos}">
+                    <td><span class="person-cell"><span class="avatar" th:text="${#strings.substring(aluno.nome, 0, 1)}">A</span><strong th:text="${aluno.nome}">Nome do aluno</strong></span></td>
+                    <td class="muted-cell" th:text="${aluno.cpf}">00000000000</td>
+                    <td class="muted-cell" th:text="${aluno.email}">aluno@email.com</td>
+                    <td class="row-actions">
+                        <a class="text-action" th:href="@{/alunos/{id}/editar(id=${aluno.id})}">Editar</a>
+                        <form th:action="@{/alunos/{id}/excluir(id=${aluno.id})}" method="post" onsubmit="return confirm('Excluir este aluno?');">
+                            <button class="text-action danger-action" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(alunos)}">
+            <span class="empty-icon">A</span>
+            <h3>Nenhum aluno cadastrado</h3>
+            <p>Cadastre o primeiro aluno para começar a organizar as matrículas.</p>
+            <a class="button button-secondary" th:href="@{/alunos/novo}">Cadastrar aluno</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

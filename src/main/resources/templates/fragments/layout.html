@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title th:text="${titulo + ' · Matrícula'}">Matrícula</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar" th:fragment="nav(secaoAtiva)">
+    <a class="brand" th:href="@{/alunos}" aria-label="Sistema de Matrícula, início">
+        <span class="brand-mark">M</span>
+        <span class="brand-copy"><strong>matrícula</strong><small>gestão acadêmica</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegação principal">
+        <a th:href="@{/alunos}" th:classappend="${secaoAtiva == 'alunos' ? ' active' : ''}">Alunos</a>
+        <a th:href="@{/cursos}" th:classappend="${secaoAtiva == 'cursos' ? ' active' : ''}">Cursos</a>
+        <a th:href="@{/matriculas}" th:classappend="${secaoAtiva == 'matriculas' ? ' active' : ''}">Matrículas</a>
+    </nav>
+</header>
+</body>
+</html>
